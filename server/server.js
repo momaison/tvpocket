@@ -7,11 +7,7 @@ var io = require("socket.io").listen(server);
 var ent = require('ent');
 var fs = require('fs');
 
-var config = require("serverConfig.json");
-
-var cs = require("services/connectionServices")(io);
-var gs = require("services/gameServices")(io);
-
+var config = require("./config.json");
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -30,24 +26,6 @@ io.sockets.on('connection', function (socket, pseudo) {
 
   socket.on("disconnect", function (userInfo) {
     cs.disconnect(socket, userInfo)
-  });
-
-  socket.on("kick", function (info) {
-    cs.kick(socket, info)
-  });
-
-  /** Game **/
-  socket.on("moving", function (movement) {
-    gs.move(socket, movement)
-  });
-
-  socket.on("shooting", function (shot) {
-    gs.shoot(socket, shot)
-  });
-
-  //let's see
-  socket.on("upgrading", function (upgrade) {
-    gs.upgrade(socket, upgrade)
   });
 
 });
